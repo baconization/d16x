@@ -1,0 +1,7 @@
+#!/bin/sh
+rm d16x 2> /dev/null
+cd src
+./build
+cd ../tests
+./run_all_tests
+rm ../d16x 2> /dev/null

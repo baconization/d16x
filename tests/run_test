@@ -1,0 +1,18 @@
+#!/bin/sh
+../d16x $1 > /tmp/computed.x
+cmp /tmp/computed.x "gold/$1.gold"
+RET=`echo $?`
+
+if [ "$RET" -eq "2" ]; then
+  echo "Test[$1]....failed (no gold file)"
+  exit 2
+fi
+if [ "$RET" -eq "0" ]; then
+  echo "Test[$1]....success"
+  exit 0
+fi
+
+echo "Test[$1]....failed (mis-match)"
+exit 1
+
+

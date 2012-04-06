@@ -1,0 +1,2 @@
+#!/bin/sh
+ls -1 *.x | xargs -L 1 ./run_test
