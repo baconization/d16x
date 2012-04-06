@@ -4,7 +4,6 @@ open Batteries_uni;;
 open D16xparse;;
 module StringMap = Map.Make (String);;
 
-
 let rec compile_macros full_tree =
    let rec build tree map = (
       let rec build_children list submap =
