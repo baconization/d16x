@@ -71,7 +71,8 @@ let rec assemble_untranslated_machine_code tree =
    |  TreeExpression(binaryOp, [a;b]) ->
       let comment = tree_to_string tree in
          assemble_op (binaryOp, a, b, comment)
-   |  _ -> raise (Unknown("tis broken, I know"))
+   |  TreeNoOp -> []
+   |  _ -> raise (Unknown("unknown tree;"))
    ;;
       
 (* given a very basic tree, assemble the machine code *)

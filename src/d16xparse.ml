@@ -49,6 +49,7 @@ let isNumeric chr = '0' <= chr && chr <= '9' || chr == '-' || chr == 'x';;
 let isIdent chr = 
    'a' <= chr && chr <= 'z' ||
    'A' <= chr && chr <= 'Z' ||
+   '0' <= chr && chr <= '9' ||
    chr == '_' ||
    chr == '!' ||
    chr == '+' ||
@@ -135,6 +136,7 @@ type tyTree =
    |  TreeString of string
    |  TreeIdent of string
    |  TreeExpression of string*(tyTree list)
+   |  TreeNoOp
    ;;
    
 let rec tree_to_string tree =
@@ -144,6 +146,7 @@ let rec tree_to_string tree =
    |  TreeString(s) -> "\"" ^ s ^ "\" "
    |  TreeIdent(s) -> s ^ " "
    |  TreeExpression(id, children) -> "(" ^ id ^ " " ^ (foldChildren children) ^ ") "
+   |  TreeNoOp -> ""
    ;;
    
 let rec parse_tree_item tokens =
