@@ -4,6 +4,7 @@
 05a1                ;(SET PUSH (REG B ) ) 
 6001                ;(SET (REG A ) POP ) 
 6002                ;(ADD (REG A ) POP ) 
+01a1                ;(SET PUSH (REG A ) ) 
 0811                ;(SET (REG B ) (REG C ) ) 
 0021                ;(SET (REG C ) (REG A ) ) 
 7dc10002            ;(SET PC (# loop ) ) 

@@ -13,6 +13,9 @@ if [ "$RET" -eq "0" ]; then
 fi
 
 echo "Test[$1]....failed (mis-match)"
+echo "--------------------------------------------"
+diff /tmp/computed.x "gold/$1.gold"
+echo "--------------------------------------------"
 exit 1
 
 
