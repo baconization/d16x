@@ -37,15 +37,23 @@ let rec pre_formulate_and_compute tree =
 
 let rec next_stack_compute atree loc =
    match atree with
-      Const(v) -> TreeExpression("SET", [TreeIdent("PUSH");TreeInteger(v)])
-   |  Value(t) -> TreeExpression("SET", [TreeIdent("PUSH");t])
+      Const(v) -> 
+         let code = TreeExpression("SET", [TreeIdent("PUSH");TreeInteger(v)]) in
+         let read = TreeIdent("POP") in
+            (code, read)
+   |  Value(t) ->
+         let code = TreeExpression("SET", [TreeIdent("PUSH");t]) in
+         let read = TreeIdent("POP") in
+            (code, read)
    |  Expr(operation, commutes, left, right) ->
-      let eval_left = next_stack_compute left loc in
-      let eval_right = next_stack_compute right loc in
-      let x1 = TreeExpression("SET", [loc;TreeIdent("POP")]) in
-      let x2 = TreeExpression(operation, [loc;TreeIdent("POP")]) in
+      let (code_left, read_left) = next_stack_compute left loc in
+      let (code_right, read_right) = next_stack_compute right loc in
+      let x1 = TreeExpression("SET", [loc;read_left]) in
+      let x2 = TreeExpression(operation, [loc;read_right]) in
       let x3 = [TreeExpression("SET", [TreeIdent("PUSH");loc])] in
-         TreeExpression("SEQ", [eval_right;eval_left;x1;x2] @ x3)
+      let code = TreeExpression("SEQ", [code_right;code_left;x1;x2] @ x3) in
+      let read = TreeIdent("POP") in
+         (code, read)
    ;;
 
 (*
@@ -57,7 +65,8 @@ let rec next_stack_compute atree loc =
 
 let stackcompute tree loc =
    let atree = pre_formulate_and_compute tree in
-   next_stack_compute atree loc;;
+   let (code, read) = next_stack_compute atree loc in
+      code;;
 
 let compile_computes tree =
    let find = function x -> match x with ("stackcompute",[a;b]) -> true | _ -> false in
