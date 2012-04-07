@@ -58,6 +58,7 @@ let isIdent chr =
    chr == '*' ||
    chr == '/' ||
    chr == ':' ||
+   chr == '$' ||
    chr == '#';;
 
 let lookupEscapedChar chr = 
