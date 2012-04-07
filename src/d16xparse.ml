@@ -95,7 +95,10 @@ let rec rtokenize (charList, typ, stringBuffer, currentTokens) =
       if isNumeric chr then
          rtokenize(nextCharList, BufNumber, stringBuffer ^ (String.make 1 chr), currentTokens)
       else
-         rtokenize(charList, BufNone, "", TokNumber(int_of_string stringBuffer) :: currentTokens)
+         if stringBuffer = "-" then
+            rtokenize(charList, BufNone, "", TokIdent("-") :: currentTokens)
+         else
+            rtokenize(charList, BufNone, "", TokNumber(int_of_string stringBuffer) :: currentTokens)
    | (chr::nextCharList,BufString) -> 
       if chr == '"' then
          rtokenize(nextCharList, BufNone, "", TokString(stringBuffer) :: currentTokens)

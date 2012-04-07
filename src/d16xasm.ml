@@ -54,14 +54,14 @@ let rec assemble_untranslated_machine_code tree =
          |  TreeIdent("PUSH") -> (0x1a, [])
          |  TreeIdent("SP") -> (0x1b, [])
          |  TreeIdent("PC") -> (0x1c, [])
-         |  TreeIdent("O") -> (0x1d, [])
+         |  TreeIdent("EX") -> (0x1d, [])
          |  _ -> raise (Unknown("unknown value got: " ^ (tree_to_string tree)))) in
       let (va, wa) = assemble_value a in
       let (vb, wb) = assemble_value b in
       let op = operation_value oper in
       let words = [Word(vb * 16 * 64 + va * 16 + op)] @ wa @ wb in
          words @ [Comment(c, List.length words)] in
-   let assemble_extended_op op v comment =
+   let assemble_extended_op op v comment = (* todo: update for new 7-bit op-code *)
       assemble_op ("0", TreeExpression("OP",[TreeInteger(op)]), v, comment) in
    match tree with
       TreeExpression("SEQ", children) -> List.flatten (List.map assemble_untranslated_machine_code children)

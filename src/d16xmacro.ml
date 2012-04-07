@@ -35,5 +35,3 @@ let rec compile_macros full_tree =
       ) in
       rewrite clean_tree (function (name, _) -> StringMap.mem name macro_map) do_subs;;
 
-
-

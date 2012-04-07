@@ -17,6 +17,7 @@ let list_to_childmap list =
    build list 1 StringMap.empty
    ;;
 
+(* this fun little guy lets you hunt for things in the tree and build a map *)
 let tree_hunt indexer tree =
    let rec hunter map tree =
       (let (found, nextmap) = indexer (tree, map) in
@@ -27,6 +28,7 @@ let tree_hunt indexer tree =
          |  _ -> nextmap)) in
       hunter StringMap.empty tree;;
 
+(* this is the core algorithm for doing fancy rewriting *)
 let rewrite tree predicate foo =
    let rec subs t =
       (match t with
