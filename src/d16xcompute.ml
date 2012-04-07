@@ -35,23 +35,40 @@ let rec pre_formulate_and_compute tree =
    |  _ -> Value(tree)
    ;;
 
-let rec next_stack_compute atree loc =
-   match atree with
+let pop_trash trash = match trash with
+      [] -> (TreeIdent("PUSH"), TreeIdent("POP"), [])
+   |  h::t -> (h, h, t)
+   ;;
+
+let is_register tst =
+   match tst with
+      TreeExpression("REG", [x]) -> (true, tst)
+   |  _ -> (false, TreeNoOp)
+   ;;
+(*
+
+*)
+let rec next_stack_compute atree loc trash =
+   match atree with 
       Const(v) -> 
-         (TreeNoOp, TreeInteger(v))
+         (TreeNoOp, TreeInteger(v), trash)
    |  Value(t) ->
-         let code = TreeExpression("SET", [TreeIdent("PUSH");t]) in
-         let read = TreeIdent("POP") in
-            (code, read)
+         let (is_reg, reg_read) = is_register t in
+         if is_reg then
+            (TreeNoOp, reg_read, trash)
+         else
+            (let (write, read, next_trash) = pop_trash trash in
+             let code = TreeExpression("SET", [write;t]) in
+               (code, read, next_trash))
    |  Expr(operation, commutes, left, right) ->
-      let (code_left, read_left) = next_stack_compute left loc in
-      let (code_right, read_right) = next_stack_compute right loc in
+      let (code_left, read_left, next_trash) = next_stack_compute left loc trash in
+      let (code_right, read_right, final_trash) = next_stack_compute right loc next_trash in
       let x1 = TreeExpression("SET", [loc;read_left]) in
       let x2 = TreeExpression(operation, [loc;read_right]) in
       let x3 = [TreeExpression("SET", [TreeIdent("PUSH");loc])] in
       let code = TreeExpression("SEQ", [code_right;code_left;x1;x2] @ x3) in
       let read = TreeIdent("POP") in
-         (code, read)
+         (code, read, final_trash)
    ;;
 
 (*
@@ -62,8 +79,9 @@ let rec next_stack_compute atree loc =
 *)
 
 let stackcompute tree loc =
+   let trash = [] in
    let atree = pre_formulate_and_compute tree in
-   let (code, read) = next_stack_compute atree loc in
+   let (code, read, _) = next_stack_compute atree loc trash in
       if code = TreeNoOp then
          TreeExpression("SET", [loc; read])
       else
