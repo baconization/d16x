@@ -2,27 +2,19 @@
 
 open Batteries_uni;;
 open D16xparse;;
+open D16xutil;;
 module StringMap = Map.Make (String);;
 
+
+
 let rec compile_macros full_tree =
-   let rec build tree map = (
-      let rec build_children list submap =
-         (match list with
-            [] -> submap
-         | h::t -> let nextmap = build h submap in build_children t nextmap) in
-      match tree with
-         TreeExpression("INLINE", [TreeIdent(ident);body]) -> StringMap.add ident body map
-      |  TreeExpression(_,children) -> build_children children map
-      |  _ -> map
-   ) in
-   let macro_map = build full_tree StringMap.empty in
-   let rec rewrite_macros tree =
-      (match tree with
-         TreeExpression("INLINE", _) -> TreeNoOp
-      |  TreeExpression(ident, children) ->
-            if StringMap.mem ident macro_map then
-               StringMap.find ident macro_map
-            else
-               TreeExpression(ident, List.map rewrite_macros children)
-      |  _ -> tree) in
-   rewrite_macros full_tree;;
+   let inline_indexer = (function (tree, map) ->
+                     match tree with
+                        TreeExpression("INLINE", [TreeIdent(ident);body]) -> (true, StringMap.add ident body map)
+                     | _ -> (false, map)) in
+   let macro_map = tree_hunt inline_indexer full_tree in
+   let clean_tree = rewrite full_tree (function (name, _) -> name = "INLINE") (function _ -> TreeNoOp) in
+      rewrite clean_tree (function (name, _) -> StringMap.mem name macro_map) (function (name, children) -> StringMap.find name macro_map);;
+
+
+
