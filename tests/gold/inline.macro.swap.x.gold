@@ -1,3 +1,3 @@
-0021
-0401
-0811
+0021                ;(SET (REG C ) (REG A ) ) 
+0401                ;(SET (REG A ) (REG B ) ) 
+0811                ;(SET (REG B ) (REG C ) ) 

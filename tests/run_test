@@ -1,5 +1,5 @@
 #!/bin/sh
-../d16x $1 > /tmp/computed.x
+../d16x $1 --debug > /tmp/computed.x
 cmp /tmp/computed.x "gold/$1.gold"
 RET=`echo $?`
 
