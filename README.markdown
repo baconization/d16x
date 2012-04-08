@@ -61,14 +61,50 @@ If you want to keep it, then PUSH it into the stack. Wait, what?
 without (REG Y), the compiled code looks like
 
 <pre>
-   0431                ;(SET (REG X ) (REG B ) ) 
-   0032                ;(ADD (REG X ) (REG A ) ) 
-   0da1                ;(SET PUSH (REG X ) ) 
-   0831                ;(SET (REG X ) (REG C ) ) 
-   6032                ;(ADD (REG X ) POP ) 
-   0da1                ;(SET PUSH (REG X ) ) 
-   6031                ;(SET (REG X ) POP ) 
+0431                ;(SET (REG X ) (REG B ) ) 
+0032                ;(ADD (REG X ) (REG A ) ) 
+0da1                ;(SET PUSH (REG X ) ) 
+0831                ;(SET (REG X ) (REG C ) ) 
+6032                ;(ADD (REG X ) POP ) 
+0da1                ;(SET PUSH (REG X ) ) 
+6031                ;(SET (REG X ) POP ) 
 </pre>
+
+However, with (REG Y), the code becomes
+
+<pre>
+0441                ;(SET (REG Y ) (REG B ) ) 
+0042                ;(ADD (REG Y ) (REG A ) ) 
+0831                ;(SET (REG X ) (REG C ) ) 
+1032                ;(ADD (REG X ) (REG Y ) ) 
+0da1                ;(SET PUSH (REG X ) ) 
+6031                ;(SET (REG X ) POP ) 
+</pre>
+
+which is slightly better; there is a bit of redundancy... (which is going to get fixed).
+
+What if we give it another trash variable by doing something like this
+
+<pre>
+(compute (REG X) (REG Y) (REG Z)
+  (+ (REG C) (+ (REG B) (+ (REG A))))
+)
+</pre>
+
+What does that do?
+
+<pre>
+0451                ;(SET (REG Z ) (REG B ) ) 
+0052                ;(ADD (REG Z ) (REG A ) ) 
+0831                ;(SET (REG X ) (REG C ) ) 
+1432                ;(ADD (REG X ) (REG Z ) ) 
+</pre>
+
+Aha, now this is better. Interestingly enough, by giving the "compute" algorithm more room, it actually removed a register.
+
+So, this what I mean by toll.
+I plan on adding some neat "aides" to make this assembler expressive, but you have to give 
+details about its wiggle room.
 
 ## Why should I use this? ##
 
