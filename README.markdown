@@ -23,9 +23,18 @@ d16x offers a lisp-like assembler language written in OCaml.
 
 ## Roadmap ##
 
-What-ever I want. Specifically,
+What-ever I want. I'll add things as I need it.
 
-* some kind of "function" concept
+I'm working a stdlib for this with things like
+
+* large stack mapping (push/pop) (if you could crawl into my head, this would make a lot of sense)
+* binary search
+* basic math
+* fixed point math
+
+And, I'd like to add a "switch" like thing for building an optimized word -> word table.
+
+I should add a "const" concept where I can make idents always refer to a specific word.
 
 ## What is a "programming language assembler thing"? ##
 
