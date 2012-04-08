@@ -1,7 +1,14 @@
 #!/bin/sh
+
+if [ ! -f "../d16x" ]; then
+   echo "Test[$1]....failed (no runtime)"
+   exit 1
+fi
+
 ../d16x $1 --debug > /tmp/computed.x
 cmp /tmp/computed.x "gold/$1.gold"
 RET=`echo $?`
+
 
 if [ "$RET" -eq "2" ]; then
   echo "Test[$1]....failed (no gold file)"

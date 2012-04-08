@@ -1,0 +1,33 @@
+7dc10009            ;(SET PC (# end ) ) 
+0000                ;Word 0
+0000                ;Word 0
+0000                ;Word 0
+0000                ;Word 0
+000100020003        ;DATA <0/3>
+d801                ;(SET (REG A ) 0x0016 ) 
+8801                ;(SET (REG A ) 0x0002 ) 
+8031                ;(SET (REG X ) 0x0000 ) 
+8441                ;(SET (REG Y ) 0x0001 ) 
+8061                ;(SET (REG I ) 0x0000 ) 
+8461                ;(SET (REG I ) 0x0001 ) 
+c461                ;(SET (REG I ) 0x0011 ) 
+c861                ;(SET (REG I ) 0x0012 ) 
+cc61                ;(SET (REG I ) 0x0013 ) 
+d461                ;(SET (REG I ) 0x0015 ) 
+00000000            ;DATA <0/2>
+00000000            ;DATA <0/2>
+0000000000000000    ;DATA <0/22>
+0000000000000000    ;DATA <4/22>
+0000000000000000    ;DATA <8/22>
+0000000000000000    ;DATA <12/22>
+0000000000000000    ;DATA <16/22>
+00000000            ;DATA <20/22>
+7c010013            ;(SET (REG A ) (# p1 ) ) 
+91010000            ;(SET (AT A 0x0000 ) 0x0004 ) 
+89010001            ;(SET (AT A 0x0001 ) 0x0002 ) 
+7c110013            ;(SET (REG B ) (# p1 ) ) 
+7c110015            ;(SET (REG B ) (# p2 ) ) 
+7c110017            ;(SET (REG B ) (# foo1 ) ) 
+7c110033            ;(SET (REG B ) (# skip ) ) 
+7c11dead            ;(SET (REG B ) 0xdead ) 
+7c11beef            ;(SET (REG B ) 0xbeef ) 

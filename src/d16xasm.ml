@@ -63,12 +63,25 @@ let rec assemble_untranslated_machine_code tree =
          words @ [Comment(c, List.length words)] in
    let assemble_extended_op op v comment = (* todo: update for new 7-bit op-code *)
       assemble_op ("0", TreeExpression("OP",[TreeInteger(op)]), v, comment) in
+   let assemble_data_block d = 
+      let mid = (string_of_int (List.length d)) ^ ">" in
+      let rec breakdown list segment = 
+         let lk = "<" ^ (string_of_int (segment * 4)) ^ "/" ^ mid in
+         (match list with
+           a::(b::(c::(d::t))) -> [Word(a);Word(b);Word(c);Word(d);Comment("DATA " ^ lk,4)]::(breakdown t (segment+1))
+         | _ -> [ (List.map (function w -> Word(w)) list) @ [Comment("DATA " ^ lk,List.length list)] ]
+      ) in
+      List.flatten (breakdown d 0) in
    match tree with
       TreeExpression("SEQ", children) -> List.flatten (List.map assemble_untranslated_machine_code children)
    |  TreeExpression("WORD", [TreeInteger(w)]) -> [Word(w); Comment("Word " ^ (string_of_int w), 1)]
-   |  TreeExpression("DATA", d) ->
-         let f = (function x -> match x with TreeInteger(w) -> Word(w) | _ -> raise (Unknown("unknown tree;"))) in 
-            (List.map f d) @ [Comment("DATA ...", List.length d)]
+   |  TreeExpression("WORDS", [TreeInteger(cnt)]) ->
+         let rec zeros n = if n = 0 then [] else 0::(zeros (n-1)) in
+         let d = zeros cnt in
+            assemble_data_block d
+   |  TreeExpression("DATA", raw) ->
+         let f = (function x -> match x with TreeInteger(w) -> w | _ -> raise (Unknown("unknown tree;"))) in 
+         assemble_data_block (List.map f raw)
    |  TreeExpression("EXT", [TreeInteger(op);v]) -> assemble_extended_op op v (tree_to_string tree)
    |  TreeExpression("JSR", [v]) -> assemble_extended_op 0x1 v (tree_to_string tree)
    |  TreeExpression(":", [TreeIdent(ident)]) -> [DefineLabel(ident)]

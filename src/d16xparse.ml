@@ -43,7 +43,8 @@ type tyToken =
 type bufTyp = BufNone | BufIdent | BufNumber | BufString;;
 
 (* is the character a numeric character *)
-let isNumeric chr = '0' <= chr && chr <= '9' || chr == '-' || chr == 'x';;
+let isNumeric chr = '0' <= chr && chr <= '9' || chr == '-';;
+let isNumericMiddle chr = '0' <= chr && chr <= '9' || chr == '-' || 'a' <= chr && chr <= 'f' || chr = 'x';;
 
 (* do we consider the character as an identifier *)
 let isIdent chr = 
@@ -92,7 +93,7 @@ let rec rtokenize (charList, typ, stringBuffer, currentTokens) =
       else
          rtokenize(charList, BufNone, "", TokIdent(stringBuffer) :: currentTokens)
    | (chr::nextCharList,BufNumber) ->
-      if isNumeric chr then
+      if isNumericMiddle chr then
          rtokenize(nextCharList, BufNumber, stringBuffer ^ (String.make 1 chr), currentTokens)
       else
          if stringBuffer = "-" then
