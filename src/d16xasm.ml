@@ -65,6 +65,10 @@ let rec assemble_untranslated_machine_code tree =
       assemble_op ("0", TreeExpression("OP",[TreeInteger(op)]), v, comment) in
    match tree with
       TreeExpression("SEQ", children) -> List.flatten (List.map assemble_untranslated_machine_code children)
+   |  TreeExpression("WORD", [TreeInteger(w)]) -> [Word(w); Comment("Word " ^ (string_of_int w), 1)]
+   |  TreeExpression("DATA", d) ->
+         let f = (function x -> match x with TreeInteger(w) -> Word(w) | _ -> raise (Unknown("unknown tree;"))) in 
+            (List.map f d) @ [Comment("DATA ...", List.length d)]
    |  TreeExpression("EXT", [TreeInteger(op);v]) -> assemble_extended_op op v (tree_to_string tree)
    |  TreeExpression("JSR", [v]) -> assemble_extended_op 0x1 v (tree_to_string tree)
    |  TreeExpression(":", [TreeIdent(ident)]) -> [DefineLabel(ident)]

@@ -1,4 +1,9 @@
-(* This defines inline macro expansion *)
+(* This is like tower of hanoi on drugs. Basically, 
+
+turn (+ (+ 1 2) 3) into lower-level code.
+
+
+ *)
 
 open Batteries_uni;;
 open D16xparse;;
