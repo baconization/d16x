@@ -1,26 +1,57 @@
-= D16X =
+# D16X #
 
-== What is d16x? ==
+## What is d16x? ##
 
 d16x is a programming language assembler thing for notch's DCPU-16.
 
 See
    http://0x10c.com/doc/dcpu-16.txt
-for more details.
+for more details on what is dcpu-16.
 
 -------------------------------------------------
 
-What is a "programming language assembler thing"?
+## What does d16x offer? ##
 
-Well, it's a programming language that you are going to hate. That's right, I'm writing a programming language that you are going to hate on _purpose_. That's the goal. It's starting out as a basic assembler written in OCaml. Why OCaml? Because, chances are you hate it, and I don't want you playing in
-my sandbox. This project is a very anti-social thing for me.
+d16x offers a lisp-like assembler language written in OCaml.
 
-Although, in some strange paradoxical universe, I also love lisp. That's why the language of d16x is Lisp-like. In fact, I may bring a full lambda calculus meta-style of programming to d16x. Why? So, language primitives in d16x can be written in d16x.
+* basic assembler like language that tastes like lisp (i.e. (SET (REG A) 0x01) instead of SET A, 0x01).
+* label a location with (: label) and then recall that (# label) as a value later
+* parameterized inline macros with labels that mutate (i.e. you can define higher order primitives like while, if)
+* expressive computation (+, *, -, /, %); write math like (+ 1 (* 2 (/ 4 (- 3 1))))
+                                                                          - 
+## What is a "programming language assembler thing"? ##
 
-That's right, my goal is to make some basic primitives in d16x that enable me (not you) to write new language primitives in d16x that compile to machine code. But, depending on where I go, I may skimp on this goal and have a lot of primitives defined in OCaml.
+Well, it's a programming language that you will most likely hate because it does things radically different.
+This is on purpose because I want a language that allows me to think expressively in assembly, but not too expressive to commit sins on my behalf. There's not going to be any standards, nor any conventions. Instead, you will be constantly presented a choice. Instead of magic, you are going to have to pay a toll.
 
-One of the reasons I'm starting out at a very low level is because memory is constrained to 64KW. For those paying attention, there are only 65,536 words. While that does mean there are 128KB, there is going to be a lot of waste if you don't understand the concept of a word. Also, I have a feeling that counting the cycle time of each operation is important, so for those of us that take the extra time out of busy days to understand the impact of registers may have a competitive advantage.
+## What do you mean "pay a toll" ##
 
-What about being "expressive?", oh, I'll be adding function, structs, and closures. Don't worry, it will be very expressive. However, it will require you to be a super genius to use them all effectively.
+Assembly is simple, and you can tell it do things that are not... needed. For instance, if I wanted to evaluate
+1 + 2 and store the result in register A, then I could do this.
 
+SET PUSH, 1
+SET PUSH, 2
+SET A, POP
+ADD A, POP
 
+Now, that looks stupid, yes? That's because it is. If you attempt to write a high level language, then good luck with that. High level languages tend to build abstractions that leak in terms of performance by abusing the stack to make things nice. It's very clear to see this happen with arithmetic. For instance, the first check-in of the (compute ...) method did just that, it abused the stack to be correct without a doubt. But, I took the time to optimize (compute ...) and there is a price.
+
+Suppose I want to compute (+ (REG C) (+ (REG B) (+ (REG A)))) and store the result in register X without touching A, B, C
+
+(compute (REG X)
+   (+ (REG C) (+ (REG B) (+ (REG A))))
+)
+
+And thus, it will be done. X will now contain the result of A+B+C without mutating any other registers. However, what if we want to make it smaler and faster without using the stack. Then, we pay with another register.
+
+(compute (REG X) (REG Y)
+   (+ (REG C) (+ (REG B) (+ (REG A))))
+)
+
+Now, register Y is considered trashed and owned.
+
+## Why should I use this? ##
+
+I'd rather you not use it. I'm writing d16x in hopes of giving me a competitive advantage in the future game. 
+
+One of the reasons I'm starting out at a very low level is because memory is constrained to 64KW. For those paying attention, there are only 65,536 words. While that does mean there are 128KB, there is going to be a lot of waste if you don't understand the concept of a word. Also, I have a feeling that counting the cycle time of each operation is important, so for those of us that take the extra time out of our busy days to understand the impact of registers may have a competitive advantage.
