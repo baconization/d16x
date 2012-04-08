@@ -98,13 +98,17 @@ let compile_computes tree =
             if code = TreeNoOp then
                (TreeExpression("SET",[loc;read]))
             else
-               (if loc = read then
-                  code
+               if read = TreeIdent("POP") then
+                  TreeExpression("SEQ", [code;TreeExpression("SET", [loc;read])])
                else
-                  let new_loc = read in
-                  let new_trash = List.map (function item -> if item = new_loc then loc else item) trash in
-                  let (new_code, new_read) = weave tree new_loc new_trash in
-                     new_code) in
+                  let (is_reg, _, _) = is_register read in
+                  (if (loc = read) or (not is_reg) then
+                     code
+                  else
+                     let new_loc = read in
+                     let new_trash = List.map (function item -> if item = new_loc then loc else item) trash in
+                     let (new_code, new_read) = weave tree new_loc new_trash in
+                        new_code) in
       let temp = List.hd list in
       let all = List.rev (List.tl list) in
       let body = List.hd all in
