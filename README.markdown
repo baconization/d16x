@@ -26,9 +26,10 @@ What-ever I want. Specially,
 * I'm going add a basic type system consisting of 
  * word
  * finite arrays (word[N] for some N)
- * pointers to words/structs
+ * pointers
  * structs
 * some kind of "function" concept
+* a way to plan out your memory out in terms of a global space, and then some concept of a function stack
 
 ## What is a "programming language assembler thing"? ##
 
