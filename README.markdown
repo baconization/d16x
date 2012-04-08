@@ -146,3 +146,20 @@ That is, I plan on adding some neat "aides" to make this assembler expressive, b
 I'd rather you not use it. I'm writing d16x in hopes of giving me a competitive advantage in the future game. 
 
 One of the reasons I'm starting out at a very low level is because memory is constrained to 64KW. For those paying attention, there are only 65,536 words. While that does mean there are 128KB, there is going to be a lot of waste if you don't understand the concept of a word. Also, I have a feeling that counting the cycle time of each operation is important, so for those of us that take the extra time out of our busy days to understand the impact of registers may have a competitive advantage.
+
+## Why is d16x written in OCaml? ##
+
+Oh, that's because I'm a math ass-hole.
+I thought about writing it in Haskell to maximize the asshole-ness, but I really like OCaml's pattern matching.
+This project is total ass-hole programming since I have a day job where I have to write
+
+* unit tests
+* regression tests
+* integration tests
+* acceptance tests
+* comments
+* code that is expected to be maintained for decades
+ 
+So, yes, I'm writing the bare minimal code that makes me happy since I plan to win at what-ever notch's game becomes.
+It's a lot of fun, and I expect bugs.
+Consider yourself lucky that I'm a cheap bastard not wanting to pay $7 to upgrade this account.
