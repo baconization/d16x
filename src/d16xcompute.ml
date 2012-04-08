@@ -82,8 +82,9 @@ let compile_computes tree =
                let (is_reg_x, _, reg_x) = is_register test_x in
                   (is_reg_x, reg_x)) in
             let (is_reg_a, reg_a) = chk_x a in
-            let (is_reg_b, reg_b) = chk_x a in
-            let should_swap = can_commute && (not is_reg_a) && is_reg_b && (is_trash reg_b)   in
+            let (is_reg_b, reg_b) = chk_x b in
+            (* todo: this should be removed, in favor that does a full commutative tree collapse/refactor *)
+            let should_swap = can_commute  && (not is_reg_a) && is_reg_b && (is_trash reg_b)  in 
             let (u, v) = if should_swap then (b, a) else (a, b) in
                join (operation, u, v) loc trash is_trash next_stack_compute in
       let do_compute tree loc trash =
