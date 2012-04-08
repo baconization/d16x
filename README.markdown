@@ -48,9 +48,20 @@ And thus, it will be done. X will now contain the result of A+B+C without mutati
    (+ (REG C) (+ (REG B) (+ (REG A))))
 )
 
-Now, register Y is considered trasd and owned by the computation process. 
+Now, register Y is considered trash and owned by the computation process. 
 There are no contracts about what register Y contains after this process.
-If you want to keep it, then PUSH it into the stack.
+If you want to keep it, then PUSH it into the stack. Wait, what?
+
+without (REG Y), the compiled code looks like
+
+   0431                ;(SET (REG X ) (REG B ) ) 
+   0032                ;(ADD (REG X ) (REG A ) ) 
+   0da1                ;(SET PUSH (REG X ) ) 
+   0831                ;(SET (REG X ) (REG C ) ) 
+   6032                ;(ADD (REG X ) POP ) 
+   0da1                ;(SET PUSH (REG X ) ) 
+   6031                ;(SET (REG X ) POP ) 
+
 
 ## Why should I use this? ##
 
