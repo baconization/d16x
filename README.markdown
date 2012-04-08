@@ -19,13 +19,23 @@ d16x offers a lisp-like assembler language written in OCaml.
 * parameterized inline macros with labels that mutate (i.e. you can define higher order primitives like while, if)
 * expressive computation (+, \*, \-, /, %); write math like (+ 1 (\* 2 (/ 4 (\- 3 1))))
 * data structure planning, sizing, and offsets
-* inline data
+* inline data: (WORD word), (WORDS cnt), (DATA 1 2 3), "abcdef"
 
 ## Roadmap ##
 
-What-ever I want. Specifically,
+What-ever I want. I'll add things as I need it.
 
-* some kind of "function" concept
+I'm working on a stdlib for this with things like
+
+* large stack mapping (push/pop) (if you could crawl into my head, this would make a lot of sense)
+* binary search
+* basic math
+* fixed point math
+
+And, I'd like to add a "switch" like thing for building an optimized word -> word table.
+I should add a "const" concept where I can make idents always refer to a specific word.
+More tests!
+I'm looking for three emulators that don't suck, so I can do multiple regression tests on the compilation results.
 
 ## What is a "programming language assembler thing"? ##
 
@@ -136,3 +146,20 @@ That is, I plan on adding some neat "aides" to make this assembler expressive, b
 I'd rather you not use it. I'm writing d16x in hopes of giving me a competitive advantage in the future game. 
 
 One of the reasons I'm starting out at a very low level is because memory is constrained to 64KW. For those paying attention, there are only 65,536 words. While that does mean there are 128KB, there is going to be a lot of waste if you don't understand the concept of a word. Also, I have a feeling that counting the cycle time of each operation is important, so for those of us that take the extra time out of our busy days to understand the impact of registers may have a competitive advantage.
+
+## Why is d16x written in OCaml? ##
+
+Oh, that's because I'm a math ass-hole.
+I thought about writing it in Haskell to maximize the asshole-ness, but I really like OCaml's pattern matching.
+This project is total ass-hole programming since I have a day job where I have to write
+
+* unit tests
+* regression tests
+* integration tests
+* acceptance tests
+* comments
+* code that is expected to be maintained for decades
+ 
+So, yes, I'm writing the bare minimal code that makes me happy since I plan to win at what-ever notch's game becomes.
+It's a lot of fun, and I expect bugs.
+Consider yourself lucky that I'm a cheap bastard not wanting to pay $7 to upgrade this account.
