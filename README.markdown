@@ -24,8 +24,12 @@ d16x offers a lisp-like assembler language written in OCaml.
 What-ever I want. Specially,
 
 * I'm going add a basic type system consisting of 
+ * word
  * finite arrays (word[N] for some N)
+ * pointers to words/structs
  * structs
+* some kind of "function" concept
+
 ## What is a "programming language assembler thing"? ##
 
 Well, it's a programming language that you will most likely hate because it does things radically different.
