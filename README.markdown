@@ -29,10 +29,10 @@ This is on purpose because I want a language that allows me to think expressivel
 Assembly is simple, and you can tell it do things that are not... needed. For instance, if I wanted to evaluate
 1 + 2 and store the result in register A, then I could do this.
 
-SET PUSH, 1
-SET PUSH, 2
-SET A, POP
-ADD A, POP
+* SET PUSH, 1
+* SET PUSH, 2
+* SET A, POP
+* ADD A, POP
 
 Now, that looks stupid, yes? That's because it is. If you attempt to write a high level language, then good luck with that. High level languages tend to build abstractions that leak in terms of performance by abusing the stack to make things nice. It's very clear to see this happen with arithmetic. For instance, the first check-in of the (compute ...) method did just that, it abused the stack to be correct without a doubt. But, I took the time to optimize (compute ...) and there is a price.
 
@@ -48,7 +48,9 @@ And thus, it will be done. X will now contain the result of A+B+C without mutati
    (+ (REG C) (+ (REG B) (+ (REG A))))
 )
 
-Now, register Y is considered trashed and owned.
+Now, register Y is considered trasd and owned by the computation process. 
+There are no contracts about what register Y contains after this process.
+If you want to keep it, then PUSH it into the stack.
 
 ## Why should I use this? ##
 
