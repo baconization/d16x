@@ -68,7 +68,8 @@ let rec assemble_untranslated_machine_code tree =
       let rec breakdown list segment = 
          let lk = "<" ^ (string_of_int (segment * 4)) ^ "/" ^ mid in
          (match list with
-           a::(b::(c::(d::t))) -> [Word(a);Word(b);Word(c);Word(d);Comment("DATA " ^ lk,4)]::(breakdown t (segment+1))
+           [] -> []
+         | a::(b::(c::(d::t))) -> [Word(a);Word(b);Word(c);Word(d);Comment("DATA " ^ lk,4)]::(breakdown t (segment+1))
          | _ -> [ (List.map (function w -> Word(w)) list) @ [Comment("DATA " ^ lk,List.length list)] ]
       ) in
       List.flatten (breakdown d 0) in
@@ -89,6 +90,10 @@ let rec assemble_untranslated_machine_code tree =
       let comment = tree_to_string tree in
          assemble_op (binaryOp, a, b, comment)
    |  TreeNoOp -> []
+   |  TreeString(s) ->
+         let chars = String.explode s in
+         let vals = List.map (Char.code) chars in
+            assemble_data_block vals
    |  _ -> raise (Unknown("unknown tree;"))
    ;;
       

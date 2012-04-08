@@ -68,6 +68,7 @@ let lookupEscapedChar chr =
    |  'n' -> '\n'
    |  'r' -> '\r'
    |  't' -> '\t'
+   |  '0' -> Char.chr 0
    |  _ -> raise (ParseException("unknown escape character "^(String.make 1 chr)));;
 
 (* tokenize the char list in reverse *)
