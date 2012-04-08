@@ -21,14 +21,15 @@ d16x offers a lisp-like assembler language written in OCaml.
 
 ## Roadmap ##
 
-What-ever I want. Specially,
+What-ever I want. Specifically,
 
 * I'm going add a basic type system consisting of 
  * word
  * finite arrays (word[N] for some N)
- * pointers to words/structs
+ * pointers
  * structs
 * some kind of "function" concept
+* a way to plan out your memory out in terms of a global space, and then some concept of a function stack
 
 ## What is a "programming language assembler thing"? ##
 
@@ -94,7 +95,7 @@ However, with (REG Y), the code becomes
 
 which is slightly better; there is a bit of redundancy... (which is going to get fixed).
 
-What if we give it another trash variable by doing something like this
+What if we give it another trash variable, say (REG Z):
 
 <pre>
 (compute (REG X) (REG Y) (REG Z)
@@ -111,7 +112,9 @@ What does that do?
 1432                ;(ADD (REG X ) (REG Z ) ) 
 </pre>
 
-Aha, now this is better. Interestingly enough, by giving the "compute" algorithm more room, it actually removed a register. I could rewrite the original expression in a way that causes it to reduce more; for instance,
+Aha, now this is better.
+Interestingly enough, by giving the "compute" algorithm more room, it actually removed a register.
+I can also rewrite the original expression in a way that causes it to reduce more; for instance,
 
 <pre>
 (compute (REG X) (REG Y)
@@ -127,9 +130,10 @@ will become
 0832                ;(ADD (REG X ) (REG C ) ) 
 </pre>
 
-which is optimal. I'm working on figuring out how to exploit the commutative properties of addition to make this a gurantee.
+which is optimal. I'm working on exploiting the commutative properties of addition/multiplication to make this a gurantee.
 
-So, this what I mean by toll. That is, I plan on adding some neat "aides" to make this assembler expressive, but you have to give details about its wiggle room.
+So, this what I mean by a toll.
+That is, I plan on adding some neat "aides" to make this assembler expressive, but you have to give details about its wiggle room.
 
 ## Why should I use this? ##
 
