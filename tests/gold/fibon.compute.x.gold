@@ -2,8 +2,6 @@
 8421                ;(SET (REG C ) 0x0001 ) 
 0401                ;(SET (REG A ) (REG B ) ) 
 0802                ;(ADD (REG A ) (REG C ) ) 
-01a1                ;(SET PUSH (REG A ) ) 
-6001                ;(SET (REG A ) POP ) 
 0811                ;(SET (REG B ) (REG C ) ) 
 0021                ;(SET (REG C ) (REG A ) ) 
 7dc10002            ;(SET PC (# loop ) ) 

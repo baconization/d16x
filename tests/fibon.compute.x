@@ -4,7 +4,7 @@
 (SET (REG C) 1)
 
 (: loop)
-   (stackcompute (REG A) (+ (REG B) (REG C)))
+   (compute (REG A) (REG X) (+ (REG B) (REG C)))
 
    (SET (REG B) (REG C))
    (SET (REG C) (REG A))
