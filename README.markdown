@@ -19,6 +19,13 @@ d16x offers a lisp-like assembler language written in OCaml.
 * parameterized inline macros with labels that mutate (i.e. you can define higher order primitives like while, if)
 * expressive computation (+, \*, \-, /, %); write math like (+ 1 (\* 2 (/ 4 (\- 3 1))))
 
+## Roadmap ##
+
+What-ever I want. Specially,
+
+* I'm going add a basic type system consisting of 
+ * finite arrays (word[N] for some N)
+ * structs
 ## What is a "programming language assembler thing"? ##
 
 Well, it's a programming language that you will most likely hate because it does things radically different.
