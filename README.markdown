@@ -21,7 +21,7 @@ d16x offers a lisp-like assembler language written in OCaml.
 
 ## Roadmap ##
 
-What-ever I want. Specially,
+What-ever I want. Specifically,
 
 * I'm going add a basic type system consisting of 
  * word
