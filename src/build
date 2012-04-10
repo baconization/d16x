@@ -6,7 +6,7 @@
 clear
 rm ../d16x 2> /dev/null
 ocamlfind ocamlc -package batteries -package batteries.syntax -syntax camlp4o -linkpkg \
-  d16xparse.ml d16xasm.ml d16xutil.ml d16xmacro.ml d16xcompute.ml d16xtypes.ml main.ml -o d16x
+  d16xparse.ml d16xasm.ml d16xutil.ml d16xmacro.ml d16xcompute.ml d16xtypes.ml d16xtable.ml main.ml -o d16x
 rm *.cm*
 mv d16x ..
 

@@ -8,14 +8,17 @@ open D16xasm;;
 open D16xmacro;;
 open D16xcompute;;
 open D16xtypes;;
+open D16xtable;;
 
 let argv = Array.to_list Sys.argv in
 let files = List.filter (function item -> (String.get item 1) != '-') (List.tl argv) in
 let show_comments = (List.length (List.filter (function item -> (item = "--debug")) argv)) > 0 in
-let stage1 = parse_files files in
-let stage2 = compile_types stage1 in
-let stage3 = compile_computes stage2 in
-let stage4 = compile_macros stage3 in
-let machine_code = assemble stage4 in
+let staged = parse_files files in
+let staged = compile_types staged in
+let staged = compile_computes staged in
+let staged = compile_tables staged in
+let staged = compile_macros staged in
+let staged = compile_macros staged in
+let machine_code = assemble staged in
    debug_code_print machine_code show_comments
 
